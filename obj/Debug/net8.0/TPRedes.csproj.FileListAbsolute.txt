@@ -1,0 +1,14 @@
+C:\Users\Brian\Desktop\TPRedes\bin\Debug\net8.0\TPRedes.exe
+C:\Users\Brian\Desktop\TPRedes\bin\Debug\net8.0\TPRedes.deps.json
+C:\Users\Brian\Desktop\TPRedes\bin\Debug\net8.0\TPRedes.runtimeconfig.json
+C:\Users\Brian\Desktop\TPRedes\bin\Debug\net8.0\TPRedes.dll
+C:\Users\Brian\Desktop\TPRedes\bin\Debug\net8.0\TPRedes.pdb
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.AssemblyInfoInputs.cache
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.AssemblyInfo.cs
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.csproj.CoreCompileInputs.cache
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.dll
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\refint\TPRedes.dll
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.pdb
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.genruntimeconfig.cache
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\ref\TPRedes.dll
