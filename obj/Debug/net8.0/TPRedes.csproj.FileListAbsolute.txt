@@ -12,3 +12,4 @@ C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\refint\TPRedes.dll
 C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.pdb
 C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.genruntimeconfig.cache
 C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\ref\TPRedes.dll
+C:\Users\Brian\Desktop\TPRedes\obj\Debug\net8.0\TPRedes.sourcelink.json
