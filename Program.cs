@@ -82,7 +82,7 @@ internal class Program
 
         url = Path.Combine(AppContext.BaseDirectory, Root, url.TrimStart('/'));
 
-        if (url.EndsWith(".html"))
+        if (url.EndsWith(".html") && File.Exists(url))
         {
           RenderPage(stream, url, code); // Se retornará un archivo html
         }
@@ -131,7 +131,8 @@ internal class Program
       ClientData.Code = code;
       ClientData.Method = method;
       ClientData.UrlParams = queryParams;
-      ClientData.RequestedFile = url;
+      // ClientData.RequestedFile = url;
+      ClientData.RequestedFile = Path.GetFileName(url);
       ClientData.Ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
       ClientData.Date = DateTime.Now;
       SaveLog(ClientData);
