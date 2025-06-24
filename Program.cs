@@ -44,6 +44,7 @@ internal class Program
 
       byte[] buffer = new byte[8192];
       int bytesRead = stream.Read(buffer, 0, buffer.Length);
+      // Convierte los bytes leídos en texto
       string requestText = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
       // Separar encabezados y body
@@ -51,7 +52,7 @@ internal class Program
       string headers = requestParts[0];
       string body = requestParts.Length > 1 ? requestParts[1] : "";
 
-      // Extraer método y URL
+      // Extraer método http y URL
       string[] headerLines = headers.Split("\r\n");
       string[] requestLineParts = headerLines[0].Split(' ');
       if (requestLineParts.Length < 2) return;
@@ -74,21 +75,29 @@ internal class Program
 
       if (method == "GET")
       {
-        // Se construye la ruta del archivo log o html
-        url = BuildPath(url);
-
-        if (url == "/index.html")
+        if (url == "/")
         {
-          RenderPage(stream, "index.html", code); // Se retornará el index.html
+          url = "/index.html";
+        }
+
+        url = Path.Combine(AppContext.BaseDirectory, Root, url.TrimStart('/'));
+
+        if (url.EndsWith(".html"))
+        {
+          RenderPage(stream, url, code); // Se retornará un archivo html
+        }
+        else if (url.EndsWith(".txt") && File.Exists(url))
+        {
+          SendLog(stream, url); // Se retornará un archivo txt
         }
         else if (File.Exists(url))
         {
-          SendLog(stream, url); // Se retornará un archivo log
+          SendStaticFile(stream, url); // Buscará otros archivos (png, js, css)
         }
         else
         {
           code = "404";
-          RenderPage(stream, "error.html", code); // Se retornará el error.html
+          RenderPage(stream, Path.Combine(AppContext.BaseDirectory, Root, "error.html"), code); // Se retornará el error.html
         }
       }
       else if (method == "POST")
@@ -97,11 +106,11 @@ internal class Program
         int contentLength = 0;
         foreach (string line in headerLines)
         {
-            if (line.StartsWith("Content-Length:"))
-            {
-                contentLength = int.Parse(line.Split(":")[1].Trim());
-                break;
-            }
+          if (line.StartsWith("Content-Length:"))
+          {
+            contentLength = int.Parse(line.Split(":")[1].Trim());
+            break;
+          }
         }
 
         // Si el body es más grande que el buffer inicial, leer el resto
@@ -115,7 +124,7 @@ internal class Program
 
         ClientData.Body = body;
 
-        RenderPage(stream, "post.html", code); // Se retornará el post.html
+        RenderPage(stream, Path.Combine(AppContext.BaseDirectory, Root, "post.html"), code);
       }
 
 
@@ -137,30 +146,34 @@ internal class Program
     }      
   }
 
-  static string BuildPath(string url)
+  static void SendStaticFile(NetworkStream stream, string path)
   {
-    if (url == "/")
-    {
-      return "/index.html";
-    }
-    else
-    {
-      string logPath = Path.Combine(AppContext.BaseDirectory, Root, url.TrimStart('/'));
-      if (!Path.HasExtension(logPath))
-      {
-        logPath += ".txt";
-      }
+    string contentType = "text/plain";
 
-      return logPath;
-    }
+    if (path.EndsWith(".css")) contentType = "text/css";
+    else if (path.EndsWith(".js")) contentType = "application/javascript";
+    else if (path.EndsWith(".png")) contentType = "image/png";
+
+    byte[] body = File.ReadAllBytes(path);
+    string header = "HTTP/1.1 200 OK\r\n" +
+                    $"Content-Type: {contentType}\r\n" +
+                    $"Content-Length: {body.Length}\r\n" +
+                    "\r\n";
+
+    byte[] headerBytes = System.Text.Encoding.UTF8.GetBytes(header);
+    stream.Write(headerBytes, 0, headerBytes.Length);
+    stream.Write(body, 0, body.Length);
   }
+
 
 static void RenderPage(NetworkStream stream, string page, string code)
 {
-    string rootDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "pages");
-    string filePath = Path.Combine(rootDir, page);
+    
+    // string rootDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "pages");
+    // string filePath = Path.Combine(rootDir, page);
 
-    string content = File.ReadAllText(filePath);
+    // string content = File.ReadAllText(filePath);
+    string content = File.ReadAllText(page);
     string statusText = code == "200" ? "OK" : "Not Found";
 
     string header = 
